@@ -1,0 +1,151 @@
+---
+title: "Assignment 4"
+subtitle: "MSB 105 - Data Science"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup}
+suppressPackageStartupMessages({
+library(tidyverse)
+library(lubridate)
+library(PxWebApiData)
+})
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+
+```{r}
+load("knr.Rdata") # Laster inn dataene
+```
+
+Henter inn gjennomsnittlig kvadratmeterpris for eneboliger fra 2002 til 2007.
+
+```{r}
+pm2_raw <- ApiData(
+urlToData = "06035",
+Region = knr,
+ContentsCode = "KvPris",
+Boligtype = "01",
+Tid = c(as.character(2002:2017))
+)
+```
+
+
+```{r}
+pm2 <- pm2_raw$dataset %>% 
+  tibble() %>% 
+  select(-Boligtype, -ContentsCode) %>% 
+  rename(
+    knr = Region,
+    aar = Tid,
+    pm2 = value
+  )
+head(pm2)
+```
+
+```{r}
+names(pm2_raw)[[1]] <- "desc"
+```
+
+
+```{r}
+pm2 <- pm2 %>%
+mutate(
+  knavn = pm2_raw$desc$region) %>% 
+  group_by(knr) %>% 
+  select(knr, aar, pm2, knavn)
+```
+
+
+```{r}
+load("test_string_tib.Rdata")
+# Legg inn regex mønster
+moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
+
+test_string_tib %>% 
+  mutate(
+    knavn = str_replace(knavn, moenster, "")
+  )
+```
+
+```{r}
+pm2 <- pm2 %>% 
+  mutate(knavn = str_replace(knavn, moenster, "")
+         )
+```
+
+
+i. Finner antall NA-verdier:
+
+```{r}
+pm2 %>% 
+  map_df(is.na) %>% 
+  map_df(sum) %>% 
+  as.tibble()
+```
+
+2903 NA-verdier i datasettet.
+
+For å finne hvor mange complete.cases der er fra 2006 til 2017 og fra 2008 til 2017 må vi først bruke filterfunksjonen til å kun inkludere datene fra og med 2006 og 2008.
+
+```{r}
+pm2_2006 <- pm2 %>% 
+  filter(aar >= 2006) %>% 
+  pivot_wider(names_from = aar,
+              values_from = pm2)
+```
+
+```{r}
+pm2_2008 <- pm2 %>% 
+  filter(aar >= 2008) %>% 
+  pivot_wider(names_from = aar,
+              values_from = pm2)
+```
+
+ii. Complete.cases 2006:
+
+```{r}
+pm2_2006 %>%
+  complete.cases() %>% 
+  sum()
+```
+
+iii. complete.cases 2008:
+
+```{r}
+pm2_2008 %>%
+  complete.cases() %>% 
+  sum()
+```
+
+Så fjernes pm2_raw fra environment.
+
+```{r}
+rm(pm2_raw)
+```
+
+Trimmer ned **pm2_2008** til de 214 complete case-ene og legger det inn i pm2:
+
+```{r}
+pm2 <- pm2_2008 %>% 
+  na.omit(pm2)
+```
+
+Da har vi datasettet **pm2** klart til å bli analysert.
+
+
+
+# Befolkning
+
+
+
+
+
+
+
+
+
+
