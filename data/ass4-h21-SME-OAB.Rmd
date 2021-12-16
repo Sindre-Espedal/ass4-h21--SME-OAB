@@ -63,7 +63,7 @@ mutate(
 ```{r}
 load("test_string_tib.Rdata")
 # Legg inn regex mønster
-moenster <- '\\s+\\(\\d*[19-]\\d*[2019]\\)\\s*$'
+moenster <- '\\s*\\([\\d\\s-]*\\d*\\)\\s*$'
 
 test_string_tib %>% 
   mutate(
@@ -139,6 +139,97 @@ Da har vi datasettet **pm2** klart til å bli analysert.
 
 
 # Befolkning
+
+## "Yrkesaktiv alder"
+
+Henter inn data fra tabell 07459:
+
+```{r}
+pop_08_17_ya_raw <- ApiData(
+urlToData = "07459",
+Region = knr,
+Kjonn = c(1,2),
+Alder = list("agg:TredeltGrupperingB2", 
+             c("F20-64")),
+Tid = c(as.character(2008:2017))
+)
+pop_08_17_ya_raw <- pop_08_17_ya_raw$dataset %>% 
+  select(-ContentsCode, -Alder)
+```
+
+
+
+```{r}
+pop_08_17_ya <- pop_08_17_ya_raw %>% 
+  pivot_wider(
+    id_cols = c(Region, Tid),
+    names_prefix = "sex",
+    names_from = Kjonn,
+    values_from = value)
+```
+
+Lager navn:
+
+```{r names}
+names(pop_08_17_ya)[[1]] <- "knr"
+names(pop_08_17_ya)[[2]] <- "aar"
+names(pop_08_17_ya)[[3]] <- "ya_Menn"
+names(pop_08_17_ya)[[4]] <- "ya_Kvinner"
+```
+
+Legger til total av menn og kvinner (ya_kvinner):
+
+```{r mutate}
+pop_08_17_ya <- pop_08_17_ya %>% 
+  mutate(ya_Total = ya_Menn + ya_Kvinner)
+```
+
+Kommer dermed frem til:
+
+```{r dim}
+dim(pop_08_17_ya)
+```
+
+
+
+## Data henting 2, SSB
+
+```{r}
+pop_08_17_raw <- ApiData(
+  urlToData = "07459",
+  Region = knr,
+  Kjonn = c(1,2),
+  Alder = list("agg:TodeltGrupperingB",
+               c("H17", "H18")),
+  Tid = c(as.character(2008:2017))
+)$dataset %>% 
+  select(-ContentsCode)
+```
+
+
+
+```{r}
+pop_08_17 <- pop_08_17_raw %>% 
+  pivot_wider(
+    names_from = Alder,
+    values_from = Kjonn
+  )
+```
+
+
+
+
+
+
+# Øvre og nedre desil/kvintil
+
+
+## Data henting, SSB
+
+```{r}
+Kvintiler_08_17 <- ApiData()
+```
+
 
 
 
