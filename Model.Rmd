@@ -1,0 +1,191 @@
+---
+title: "Modeller"
+subtitle: "MSB 105 - Assignment 4"
+author: "Sindre M. Espedal & Ole Alexander Bakkevik"
+output: html_notebook
+---
+
+```{r}
+suppressPackageStartupMessages({
+library(tidyverse)
+library(lubridate)
+library(modelr)
+library(broom)
+library(lmtest)
+library(sandwich)
+library(viridis)
+})
+```
+
+Henter csv. filen:
+
+```{r}
+pm2 <- read_csv("data/pm2.csv", show_col_types = FALSE)
+```
+
+
+Muterer:
+```{r}
+pm2 <- pm2 %>% 
+  mutate(
+    fnr = str_sub(knr, 1,2),
+    aar_f = str_sub(aar)
+  )
+```
+
+
+```{r}
+head(pm2)
+```
+
+parse_factor funksjonen:
+```{r}
+pm2 %>% 
+  mutate(
+    fnr = parse_factor(fnr, levels = fnr),
+    aar_f = parse_factor(aar_f, levels = aar_f)
+  )
+```
+
+
+muterer:
+```{r}
+pm2 <- pm2 %>% 
+  mutate(
+    Trade_pc_100K = Trade_p/100000
+  ) 
+```
+
+```{r head}
+head(pm2, n = 4) %>% 
+  select(knr, fnr, aar_f, Trade_pc_100K)
+```
+
+
+# Modell
+
+```{r}
+mod1 <- 'pm2 ~ aar_f + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+```
+
+i. 
+
+```{r}
+lm1 <- lm(mod1, data = pm2, subset = complete.cases(pm2))
+```
+
+```{r}
+summary(lm1)
+```
+
+
+ii. Legger til residualer:
+
+```{r}
+pm2 %>% 
+  add_residuals(lm1)
+head(pm2, n = 4)
+```
+
+i.
+
+Man leser ut gjennomsnittlig kvadratmeterpris for en enebolig ($pm2$) for de forskjellige årene. Vi ser at $pm2$ stiger jevnt og trutt.
+
+ii.
+
+Vi vil si at fortegnene er som forventet. Dersom vi har tolket modellen riktig, så vil $pm2$ være mindre for dem nederste kvintilen (*inc_k1*) enn for den øverste (*inc_k5*). Det samme gjelder for de med kort og lang utdanning.
+
+Dette er nok fordi den rikere delen av befolkninge, og de med høyere utdanning, sannsynligvis har mer attraktive eneboliger som gjør at $pm2$ er høyere.
+
+
+
+## Heteroskedastisitet
+
+### i.
+```{r}
+bptest(lm1)
+```
+
+### ii.
+
+Veldig høy p-verdi. Da kan $H_0$ forkastes og vi kan med sterke bevis si at det foreligger Heteroskedastisitet.
+
+### iii.
+
+```{r}
+coeftest(lm1)
+```
+
+```{r}
+vcovHC(lm1)
+```
+
+### iv.
+
+```{r}
+pm2 <- pm2 %>% 
+  add_residuals(lm1)
+```
+
+### v.
+
+```{r}
+pm2 <- pm2 %>%
+  mutate(aar_d = make_date(aar))
+```
+
+### vi.
+
+```{r}
+pm2 <- pm2 %>%
+  mutate(fylke = substr(knr, start = 1, stop = 2)) 
+```
+
+```{r}
+pm2 <- pm2 %>% 
+  filter(fylke %in% c("01", "02", "03", "11", "12"))
+```
+
+## vii -x.
+
+ggplot med farge på fylkene, og legend.position. Legger også inn horisontal linje for y
+```{r ggplot }
+pm2 %>% 
+  unnest(c(fylke)) %>% 
+  group_by(fylke, aar_d) %>% 
+  summarise(mean_fylke = mean(resid)) %>% 
+  ggplot(mapping = aes(x= aar_d, y= mean_fylke, colour = fylke)) +
+  geom_line(lwd=1) +
+  geom_hline(yintercept = 0, colour = "white") +
+  theme(legend.position = "bottom")
+```
+
+# Dummy fylke og år
+
+## i.
+
+```{r}
+mod2 <- 'pm2 ~ aar_f*fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
+```
+
+## ii.
+```{r}
+lm2 <- lm(mod2, data = pm2)
+```
+
+```{r}
+summary(lm2)
+```
+
+
+```{r}
+pm2 <- pm2 %>%
+  mutate(res_m2 = resid(lm2))
+```
+
+
+## iii.
+
+
+
+
