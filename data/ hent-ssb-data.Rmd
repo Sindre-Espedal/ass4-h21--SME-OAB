@@ -3,9 +3,9 @@ title: "hent-ssb-data"
 subtitle: "MSB 105 - Data Science"
 author: "Sindre M. Espedal og Ole Alexander Bakkevik"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup}
@@ -23,7 +23,8 @@ Laster inn dataene:
 load("knr.Rdata")
 ```
 
-Henter inn gjennomsnittlig kvadratmeterpris for eneboliger fra 2002 til 2007.
+Henter inn gjennomsnittlig kvadratmeterpris for eneboliger fra 2002 til
+2007.
 
 ```{r}
 pm2_raw <- ApiData(
@@ -34,7 +35,6 @@ Boligtype = "01",
 Tid = c(as.character(2002:2017))
 )
 ```
-
 
 ```{r}
 pm2 <- pm2_raw$dataset %>% 
@@ -81,7 +81,7 @@ pm2 <- pm2 %>%
   )
 ```
 
-i. Finner antall NA-verdier:
+i.  Finner antall NA-verdier:
 
 ```{r}
 pm2 %>% 
@@ -92,7 +92,9 @@ pm2 %>%
 
 2903 NA-verdier i datasettet.
 
-For å finne hvor mange complete.cases der er fra 2006 til 2017 og fra 2008 til 2017 må vi først bruke filterfunksjonen til å kun inkludere datene fra og med 2006 og 2008.
+For å finne hvor mange complete.cases der er fra 2006 til 2017 og fra
+2008 til 2017 må vi først bruke filterfunksjonen til å kun inkludere
+datene fra og med 2006 og 2008.
 
 ```{r}
 pm2_2006 <- pm2 %>% 
@@ -132,14 +134,11 @@ pm2 <- pm2 %>%
   na.omit()
 ```
 
-Da har vi datasettet **pm2** klart til å bli analysert.
-Rydder så opp:
+Da har vi datasettet **pm2** klart til å bli analysert. Rydder så opp:
 
 ```{r}
 rm(pm2_raw)
 ```
-
-
 
 # Befolkning
 
@@ -158,7 +157,6 @@ Tid = c(as.character(2008:2017))
 )$dataset %>% 
   select(-ContentsCode, -Alder)
 ```
-
 
 ```{r}
 pop_08_17_ya <- pop_08_17_ya_raw %>% 
@@ -194,10 +192,6 @@ dim(pop_08_17_ya)
 ```{r}
 names(pop_08_17_ya)
 ```
-
-
-
-
 
 Henter så inn data fra hele populasjonen:
 
@@ -241,7 +235,8 @@ pop_08_17 <- pop_08_17 %>%
               values_from = c(Menn, Kvinner))
 ```
 
-Lager nye variabler for kvinner og menn sammenlagt (Total_t) v.h.a mutate funksjonen:
+Lager nye variabler for kvinner og menn sammenlagt (Total_t) v.h.a
+mutate funksjonen:
 
 ```{r}
 pop_08_17 <- pop_08_17 %>% 
@@ -267,7 +262,6 @@ dim(pop_08_17_ya)
 names(pop_08_17_ya)
 ```
 
-
 ```{r}
 dim(pop_08_17)
 ```
@@ -276,17 +270,17 @@ dim(pop_08_17)
 names(pop_08_17)
 ```
 
-
 Dim er ikke slik du har vist at den skal være.
 
-i. Slår sammen *pop_08_17_ya* og *pop_08_17_ya* og legger det inn i *pop_08_17_ya_p*:
+i.  Slår sammen *pop_08_17_ya* og *pop_08_17_ya* og legger det inn i
+    *pop_08_17_ya_p*:
 
 ```{r}
 pop_08_17_ya_p <- merge(pop_08_17, pop_08_17_ya)
 ```
 
-ii. Beregner prosentandel av yrkesaktiv alder for kvinner  (Kvinner_ya_p), menn (Menn_ya_p) og totalt
-(Total_ya_p).
+ii. Beregner prosentandel av yrkesaktiv alder for kvinner
+    (Kvinner_ya_p), menn (Menn_ya_p) og totalt (Total_ya_p).
 
 lager nye variabler v.h.a mutate:
 
@@ -314,7 +308,6 @@ names(pop_08_17_ya_p)
 head(pop_08_17_ya_p, n = 5)
 ```
 
-
 Legger ya variablene til pm2 tibble-en:
 
 ```{r}
@@ -323,18 +316,14 @@ pm2 <- merge(pm2, pop_08_17_ya_p)
 
 ```{r}
 pm2 <- pm2 %>% 
-  select(knr, aar, pm2, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
+  select(knr, knavn, aar, pm2, Menn_ya_p, Kvinner_ya_p, Total_ya_p)
 ```
 
-
-i. rydder opp:
+i.  rydder opp:
 
 ```{r}
 rm(pm2_2006, pm2_2008, pop_08_17, pop_08_17_raw, pop_08_17_ya, pop_08_17_ya_raw)
 ```
-
-
-
 
 # Inntektsdesiler
 
@@ -351,7 +340,6 @@ inc_08_17_raw <- ApiData(
   )$dataset %>% 
   select(Region, Desiler, Tid, value)
 ```
-
 
 pivot funksjonen (legendarisk funksjon):
 
@@ -397,21 +385,20 @@ names(inc_08_17)
 dim(inc_08_17)
 ```
 
-Det er et aller annet med **dim** her som ikke er som du vil det skal være..
+Det er et aller annet med **dim** her som ikke er som du vil det skal
+være..
 
+i.  legger disse to variablene til pm2:
 
-i. legger disse to variablene til pm2:
 ```{r}
 pm2 <- merge(pm2, inc_08_17)
 ```
 
 ii. rydder opp:
+
 ```{r}
 rm(inc_08_17, inc_08_17_raw, pop_08_17_ya_p)
 ```
-
-
-
 
 # Prosent av befolkning med universitets / høgskole utdanning
 
@@ -431,7 +418,6 @@ uni_p_raw <- ApiData(
 uni_p <- uni_p_raw
 ```
 
-
 Legger det så inn i en tibble:
 
 ```{r}
@@ -444,14 +430,14 @@ uni_p <- tibble(
 )
 ```
 
-
 ```{r}
 head(uni_p, n = 5)
 ```
 
-i. Rekoding
+i.  Rekoding
 
 nivaa:
+
 ```{r}
 uni_p <- uni_p %>% 
   mutate(
@@ -462,6 +448,7 @@ uni_p <- uni_p %>%
 ```
 
 ii. kjonn:
+
 ```{r}
 uni_p <- uni_p %>% 
   mutate(
@@ -491,13 +478,11 @@ head(uni_p, n =8)
 dim(uni_p)
 ```
 
-
-i. **uni_p** inn i **pm2**:
+i.  **uni_p** inn i **pm2**:
 
 ```{r}
 pm2 <- merge(pm2, uni_p)
 ```
-
 
 ii. fjerner:
 
@@ -505,10 +490,9 @@ ii. fjerner:
 rm(uni_p, uni_p_raw)
 ```
 
-
 # Handelsomsetning per innbygger
 
-i. henter data:
+i.  henter data:
 
 ```{r}
 trade_08_17 <- ApiData(
@@ -536,13 +520,11 @@ Trade_pc <- trade_08_17
 pm2 <- merge(pm2, Trade_pc)
 ```
 
-
 iii. Sletter v.h.a rm funksjonen
 
 ```{r}
 rm(trade_08_17, Trade_pc)
 ```
-
 
 # Skriv datasett til csv-filen pm2-csv
 
@@ -573,5 +555,3 @@ Så gjøres det om til csv:
 ```{r}
 write.csv(pm2, "pm2.csv")
 ```
-
-

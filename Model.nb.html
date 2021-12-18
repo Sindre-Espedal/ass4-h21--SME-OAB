@@ -285,9 +285,8 @@ library(viridis)
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImhlYWQocG0yLCBuID0gNCkgJT4lICIsIiAgc2VsZWN0KGtuciwgZm5yLCBhYXJfZiwgVHJhZGVfcGNfMTAwSykiXX0= -->
-<pre class="r"><code>head(pm2, n = 4) %&gt;% 
-  select(knr, fnr, aar_f, Trade_pc_100K)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiaGVhZChwbTIsIG4gPSA0KSJ9 -->
+<pre class="r"><code>head(pm2, n = 4)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -403,30 +402,23 @@ head(pm2, n = 4)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInBtMiA8LSBwbTIgJT4lICIsIiAgZmlsdGVyKGZ5bGtlICVpbiUgYyhcIjAxXCIsIFwiMDJcIiwgXCIwM1wiLCBcIjExXCIsIFwiMTJcIikpIl19 -->
-<pre class="r"><code>pm2 &lt;- pm2 %&gt;% 
-  filter(fylke %in% c(&quot;01&quot;, &quot;02&quot;, &quot;03&quot;, &quot;11&quot;, &quot;12&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
 </div>
 </div>
 <div id="vii--x." class="section level2">
 <h2>vii -x.</h2>
-<p>ggplot med farge på fylkene, og legend.position. Legger også inn horisontal linje for y</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbInBtMiAlPiUgIiwiICB1bm5lc3QoYyhmeWxrZSkpICU+JSAiLCIgIGdyb3VwX2J5KGZ5bGtlLCBhYXJfZCkgJT4lICIsIiAgc3VtbWFyaXNlKG1lYW5fZnlsa2UgPSBtZWFuKHJlc2lkKSkgJT4lICIsIiAgZ2dwbG90KG1hcHBpbmcgPSBhZXMoeD0gYWFyX2QsIHk9IG1lYW5fZnlsa2UsIGNvbG91ciA9IGZ5bGtlKSkgKyIsIiAgZ2VvbV9saW5lKGx3ZD0xKSArIiwiICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSAwLCBjb2xvdXIgPSBcIndoaXRlXCIpICsiLCIgIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwiYm90dG9tXCIpIl19 -->
-<pre class="r"><code>pm2 %&gt;% 
-  unnest(c(fylke)) %&gt;% 
-  group_by(fylke, aar_d) %&gt;% 
-  summarise(mean_fylke = mean(resid)) %&gt;% 
-  ggplot(mapping = aes(x= aar_d, y= mean_fylke, colour = fylke)) +
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMiAlPiUiLCIgIGZpbHRlcihmeWxrZSAlaW4lIGMoXCIwMVwiLCBcIjAyXCIsIFwiMDNcIiwgXCIxMVwiLCBcIjEyXCIpKSAlPiUgIiwiICB1bm5lc3QoYyhmeWxrZSkpICU+JSIsIiAgZ3JvdXBfYnkoZnlsa2UsIGFhcl9kKSAlPiUiLCIgIHN1bW1hcml6ZShtZWFuX2Z5bGtlID0gbWVhbihyZXNpZCkiLCIgICAgICAgICAgICApICU+JSAiLCIgIGdncGxvdChhZXMoeCA9IGFhcl9kLCB5ID0gbWVhbl9meWxrZSwgY29sb3VyID0gZnlsa2UpKSArIiwiICBnZW9tX2xpbmUobHdkPTEpICsiLCIgIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwiYm90dG9tXCIpKyIsIiAgZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCwgY29sb3VyID0gXCJibGFja1wiKSJdfQ== -->
+<pre class="r"><code>pm2 %&gt;%
+  filter(fylke %in% c(&quot;01&quot;, &quot;02&quot;, &quot;03&quot;, &quot;11&quot;, &quot;12&quot;)) %&gt;% 
+  unnest(c(fylke)) %&gt;%
+  group_by(fylke, aar_d) %&gt;%
+  summarize(mean_fylke = mean(resid)
+            ) %&gt;% 
+  ggplot(aes(x = aar_d, y = mean_fylke, colour = fylke)) +
   geom_line(lwd=1) +
-  geom_hline(yintercept = 0, colour = &quot;white&quot;) +
-  theme(legend.position = &quot;bottom&quot;)</code></pre>
+  theme(legend.position = &quot;bottom&quot;)+
+  geom_hline(yintercept = 0, colour = &quot;black&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -434,32 +426,22 @@ head(pm2, n = 4)</code></pre>
 </div>
 <div id="dummy-fylke-og-år" class="section level1">
 <h1>Dummy fylke og år</h1>
-<div id="i.-1" class="section level2">
-<h2>i.</h2>
+<div id="i-ii." class="section level2">
+<h2>i &amp; ii.</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoibW9kMiA8LSAncG0yIH4gYWFyX2YqZm5yICsgVG90YWxfeWFfcCArIGluY19rMSArIGluY19rNSArIHVuaV9rX21mICsgdW5pX2xfbWYgKyBUcmFkZV9wY18xMDBLJyJ9 -->
-<pre class="r"><code>mod2 &lt;- &#39;pm2 ~ aar_f*fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K&#39;</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjpbIm1vZDIgPC0gJ3BtMiB+IGFhcl9mKmZuciArIFRvdGFsX3lhX3AgKyBpbmNfazEgKyBpbmNfazUgKyB1bmlfa19tZiArIHVuaV9sX21mICsgVHJhZGVfcGNfMTAwSyciLCIiLCJsbTIgPC0gbG0obW9kMiwgZGF0YSA9IHBtMikiLCIiLCJzdW1tYXJ5KGxtMikiXX0= -->
+<pre class="r"><code>mod2 &lt;- &#39;pm2 ~ aar_f*fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K&#39;
+
+lm2 &lt;- lm(mod2, data = pm2)
+
+summary(lm2)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="ii.-1" class="section level2">
-<h2>ii.</h2>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoibG0yIDwtIGxtKG1vZDIsIGRhdGEgPSBwbTIpIn0= -->
-<pre class="r"><code>lm2 &lt;- lm(mod2, data = pm2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoic3VtbWFyeShsbTIpIn0= -->
-<pre class="r"><code>summary(lm2)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<div id="iii.-1" class="section level2">
+<h2>iii.</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjpbInBtMiA8LSBwbTIgJT4lIiwiICBtdXRhdGUocmVzX20yID0gcmVzaWQobG0yKSkiXX0= -->
@@ -469,13 +451,168 @@ head(pm2, n = 4)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="iii.-1" class="section level2">
+<div id="iv.-1" class="section level2">
+<h2>iv.</h2>
+<p>Delplott:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMiAlPiUgZmlsdGVyKGZuciAlaW4lIGMoXCIwMVwiLCBcIjAyXCIsIFwiMDRcIiwgXCIxMVwiLCBcIjEyXCIpKSAlPiUiLCJnZ3Bsb3QobWFwcGluZyA9IGFlcyh4ID0gYWFyX2QsIHkgPSByZXNfbTIpKSArIiwiZ2VvbV9saW5lKGFlcyhncm91cCA9IGtuYXZuKSkgKyIsInNjYWxlX3NpemVfbWFudWFsKHZhbHVlcyA9IGMoc2VxKDIuMCwgMC41LCBieSA9IC0wLjEpKSkgKyIsImdlb21faGxpbmUoeWludGVyY2VwdCA9IDApICsiLCJ0aGVtZShsZWdlbmQucG9zaXRpb24gPSAnYm90dG9tJykgKyIsIiAgZmFjZXRfd3JhcCh+Znlsa2UpIl19 -->
+<pre class="r"><code>pm2 %&gt;% filter(fnr %in% c(&quot;01&quot;, &quot;02&quot;, &quot;04&quot;, &quot;11&quot;, &quot;12&quot;)) %&gt;%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+geom_line(aes(group = knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = &#39;bottom&#39;) +
+  facet_wrap(~fylke)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="i-ii.-1" class="section level2">
+<h2>i &amp; ii.</h2>
+<p>Kvaliteten på modellen er ikke helt optimal da den mangler noen variabler. Dette kan ha noe med heteroskedatisitet i modell at det er stor variasjon. Det er store residualer, spesielt i Rogaland.</p>
+<p>Ut i fra grafene så ser man at variasjonen er stor. Dette indikerer et heteroskedastisitetsproblem, og dermed er det grunn til at det er utelatte viktige variabler (brudd på TS.3/TS’.3)</p>
+</div>
+<div id="iii.-2" class="section level2">
 <h2>iii.</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMiAlPiUgZmlsdGVyKGZuciAlaW4lIGMoXCIxMVwiKSkgJT4lIiwiZ2dwbG90KG1hcHBpbmcgPSBhZXMoeCA9IGFhcl9kLCB5ID0gcmVzX20yKSkgKyIsInNjYWxlX2NvbG9yX3ZpcmlkaXMoZGlzY3JldGUgPSBUUlVFLCBvcHRpb24gPSBcIkRcIikgKyIsImdlb21fbGluZShhZXMoZ3JvdXAgPSBrbmF2biwgY29sb3VyID0ga25hdm4sIHNpemUgPWtuYXZuKSkgKyIsInNjYWxlX3NpemVfbWFudWFsKHZhbHVlcyA9IGMoc2VxKDIuMCwgMC41LCBieSA9IC0wLjEpKSkgKyIsImdlb21faGxpbmUoeWludGVyY2VwdCA9IDApICsiLCJ0aGVtZShsZWdlbmQucG9zaXRpb24gPSAnYm90dG9tJykiXX0= -->
+<pre class="r"><code>pm2 %&gt;% filter(fnr %in% c(&quot;11&quot;)) %&gt;%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+scale_color_viridis(discrete = TRUE, option = &quot;D&quot;) +
+geom_line(aes(group = knavn, colour = knavn, size =knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = &#39;bottom&#39;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="i.-1" class="section level2">
+<h2>i.</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMiAlPiUgZmlsdGVyKGtuciAlaW4lIGMoXCIxMTE5XCIsIFwiMTEyMFwiLCBcIjExMjdcIiwgXCIxMTIxXCIsIFwiMTEzMFwiLCBcIjExMzVcIiwgXCIxMTA2XCIsIFwiMTE0OVwiKSkgJT4lIiwiZ2dwbG90KG1hcHBpbmcgPSBhZXMoeCA9IGFhcl9kLCB5ID0gcmVzX20yKSkgKyIsInNjYWxlX2NvbG9yX3ZpcmlkaXMoZGlzY3JldGUgPSBUUlVFLCBvcHRpb24gPSBcIkhcIikgKyIsImdlb21fbGluZShhZXMoZ3JvdXAgPSBrbmF2biwgY29sb3VyID0ga25hdm4sIHNpemUgPWtuYXZuKSkgKyIsInNjYWxlX3NpemVfbWFudWFsKHZhbHVlcyA9IGMoc2VxKDIuMCwgMC41LCBieSA9IC0wLjEpKSkgKyIsImdlb21faGxpbmUoeWludGVyY2VwdCA9IDApICsiLCJ0aGVtZShsZWdlbmQucG9zaXRpb24gPSAnYm90dG9tJykiXX0= -->
+<pre class="r"><code>pm2 %&gt;% filter(knr %in% c(&quot;1119&quot;, &quot;1120&quot;, &quot;1127&quot;, &quot;1121&quot;, &quot;1130&quot;, &quot;1135&quot;, &quot;1106&quot;, &quot;1149&quot;)) %&gt;%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+scale_color_viridis(discrete = TRUE, option = &quot;H&quot;) +
+geom_line(aes(group = knavn, colour = knavn, size =knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = &#39;bottom&#39;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="ii.-1" class="section level2">
+<h2>ii.</h2>
+<p>Stavanger-kommunene overvurderes (Hå, Klepp og Randaberg).</p>
+</div>
+</div>
+<div id="modell-for-hvert-år" class="section level1">
+<h1>Modell for hvert år</h1>
+<div id="i.-2" class="section level2">
+<h2>i.</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMl9uIDwtIHBtMiAlPiUgIiwiICBncm91cF9ieShhYXIpICU+JSIsIiAgc2VsZWN0KHBtMiwgZm5yLCBrbnIsIGFhciwgYWFyX2YsIE1lbm5feWFfcCwgS3Zpbm5lcl95YV9wLCBUb3RhbF95YV9wLCBpbmNfazEsIGluY19rNSwgdW5pX2tfbWYsIHVuaV9sX21mLCBUcmFkZV9wY18xMDBLKSAlPiUgIiwiICBuZXN0KCkiXX0= -->
+<pre class="r"><code>pm2_n &lt;- pm2 %&gt;% 
+  group_by(aar) %&gt;%
+  select(pm2, fnr, knr, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Total_ya_p, inc_k1, inc_k5, uni_k_mf, uni_l_mf, Trade_pc_100K) %&gt;% 
+  nest()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoicG0yX24ifQ== -->
+<pre class="r"><code>pm2_n</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMl9uJGRhdGFbWzFdXSAlPiUiLCJoZWFkKG4gPSA1KSJdfQ== -->
+<pre class="r"><code>pm2_n$data[[1]] %&gt;%
+head(n = 5)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiZGltKHBtMl9uKSJ9 -->
+<pre class="r"><code>dim(pm2_n)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="section" class="section level2">
+<h2>1.</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbImtvbV9tb2RlbCA8LSBmdW5jdGlvbihhX2RmKSB7IiwiICBsbShwbTIgfiBmbnIgKyBUb3RhbF95YV9wICsgaW5jX2sxICsgaW5jX2s1ICsgdW5pX2tfbWYgKyB1bmlfbF9tZiArIFRyYWRlX3BjXzEwMEssIGRhdGEgPSBwbTIpIiwifSJdfQ== -->
+<pre class="r"><code>kom_model &lt;- function(a_df) {
+  lm(pm2 ~ fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K, data = pm2)
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMl9uIDwtIHBtMl9uICU+JSAiLCIgIG11dGF0ZShtb2RlbCA9IG1hcChkYXRhLCAuZiA9IGtvbV9tb2RlbCkpICJdfQ== -->
+<pre class="r"><code>pm2_n &lt;- pm2_n %&gt;% 
+  mutate(model = map(data, .f = kom_model)) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbImtvbV9tb2RlbChwbTJfbiRhYXIpICU+JSAiLCIgIHN1bW1hcnkoKSJdfQ== -->
+<pre class="r"><code>kom_model(pm2_n$aar) %&gt;% 
+  summary()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="i.-3" class="section level2">
+<h2>i.</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbInBtMl9uICU+JSAiLCIgIGZpbHRlcihhYXIlaW4lIGMoXCIyMDA4XCIpKSAlPiUgIiwiICAuJG1vZGVsICU+JSAiLCIgIG1hcF9kZihnbGFuY2UpICU+JSAiLCIgIHByaW50KCkiXX0= -->
+<pre class="r"><code>pm2_n %&gt;% 
+  filter(aar%in% c(&quot;2008&quot;)) %&gt;% 
+  .$model %&gt;% 
+  map_df(glance) %&gt;% 
+  print()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbIm1vZF9zdW0gPC0gcG0yX24gJT4lICIsIiAgZmlsdGVyKGFhciAlaW4lIGMoXCIyMDA4XCIsIFwiMjAwOVwiLCBcIjIwMTBcIiwgXCIyMDExXCIsIFwiMjAxMlwiLCBcIjIwMTNcIiwgXCIyMDE0XCIsIFwiMjAxNVwiLCBcIjIwMTZcIiwgXCIyMDE3XCIpKSAlPiUgIiwiICBtdXRhdGUobW9kX3N1bW1hcnkgPSBtYXAoLnggPSBtb2RlbCwgLmYgPSBnbGFuY2UpKSAlPiUgIiwiICB1bm5lc3QobW9kX3N1bW1hcnkpICU+JSAiLCIgIHByaW50KCkiXX0= -->
+<pre class="r"><code>mod_sum &lt;- pm2_n %&gt;% 
+  filter(aar %in% c(&quot;2008&quot;, &quot;2009&quot;, &quot;2010&quot;, &quot;2011&quot;, &quot;2012&quot;, &quot;2013&quot;, &quot;2014&quot;, &quot;2015&quot;, &quot;2016&quot;, &quot;2017&quot;)) %&gt;% 
+  mutate(mod_summary = map(.x = model, .f = glance)) %&gt;% 
+  unnest(mod_summary) %&gt;% 
+  print()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjpbImNvZWZfZGYgPC0gbW9kX3N1bSAlPiUgIiwiICBtYXBfZGYoKSAlPiUgIiwiICBhcy50aWJibGUoKSJdfQ== -->
+<pre class="r"><code>coef_df &lt;- mod_sum %&gt;% 
+  map_df() %&gt;% 
+  as.tibble()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTW9kZWxsZXIiCnN1YnRpdGxlOiAiTVNCIDEwNSAtIEFzc2lnbm1lbnQgNCIKYXV0aG9yOiAiU2luZHJlIE0uIEVzcGVkYWwgJiBPbGUgQWxleGFuZGVyIEJha2tldmlrIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgpgYGB7cn0Kc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHsKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkobHVicmlkYXRlKQpsaWJyYXJ5KG1vZGVscikKbGlicmFyeShicm9vbSkKbGlicmFyeShsbXRlc3QpCmxpYnJhcnkoc2FuZHdpY2gpCmxpYnJhcnkodmlyaWRpcykKfSkKYGBgCgpIZW50ZXIgY3N2LiBmaWxlbjoKCmBgYHtyfQpwbTIgPC0gcmVhZF9jc3YoImRhdGEvcG0yLmNzdiIsIHNob3dfY29sX3R5cGVzID0gRkFMU0UpCmBgYAoKCk11dGVyZXI6CmBgYHtyfQpwbTIgPC0gcG0yICU+JSAKICBtdXRhdGUoCiAgICBmbnIgPSBzdHJfc3ViKGtuciwgMSwyKSwKICAgIGFhcl9mID0gc3RyX3N1YihhYXIpCiAgKQpgYGAKCgpgYGB7cn0KaGVhZChwbTIpCmBgYAoKcGFyc2VfZmFjdG9yIGZ1bmtzam9uZW46CmBgYHtyfQpwbTIgJT4lIAogIG11dGF0ZSgKICAgIGZuciA9IHBhcnNlX2ZhY3RvcihmbnIsIGxldmVscyA9IGZuciksCiAgICBhYXJfZiA9IHBhcnNlX2ZhY3RvcihhYXJfZiwgbGV2ZWxzID0gYWFyX2YpCiAgKQpgYGAKCgptdXRlcmVyOgpgYGB7cn0KcG0yIDwtIHBtMiAlPiUgCiAgbXV0YXRlKAogICAgVHJhZGVfcGNfMTAwSyA9IFRyYWRlX3AvMTAwMDAwCiAgKSAKYGBgCgpgYGB7ciBoZWFkfQpoZWFkKHBtMiwgbiA9IDQpICU+JSAKICBzZWxlY3Qoa25yLCBmbnIsIGFhcl9mLCBUcmFkZV9wY18xMDBLKQpgYGAKCgojIE1vZGVsbAoKYGBge3J9Cm1vZDEgPC0gJ3BtMiB+IGFhcl9mICsgVG90YWxfeWFfcCArIGluY19rMSArIGluY19rNSArIHVuaV9rX21mICsgdW5pX2xfbWYgKyBUcmFkZV9wY18xMDBLJwpgYGAKCmkuIAoKYGBge3J9CmxtMSA8LSBsbShtb2QxLCBkYXRhID0gcG0yLCBzdWJzZXQgPSBjb21wbGV0ZS5jYXNlcyhwbTIpKQpgYGAKCmBgYHtyfQpzdW1tYXJ5KGxtMSkKYGBgCgoKaWkuIExlZ2dlciB0aWwgcmVzaWR1YWxlcjoKCmBgYHtyfQpwbTIgJT4lIAogIGFkZF9yZXNpZHVhbHMobG0xKQpoZWFkKHBtMiwgbiA9IDQpCmBgYAoKaS4KCk1hbiBsZXNlciB1dCBnamVubm9tc25pdHRsaWcga3ZhZHJhdG1ldGVycHJpcyBmb3IgZW4gZW5lYm9saWcgKCRwbTIkKSBmb3IgZGUgZm9yc2tqZWxsaWdlIMOlcmVuZS4gVmkgc2VyIGF0ICRwbTIkIHN0aWdlciBqZXZudCBvZyB0cnV0dC4KCmlpLgoKVmkgdmlsIHNpIGF0IGZvcnRlZ25lbmUgZXIgc29tIGZvcnZlbnRldC4gRGVyc29tIHZpIGhhciB0b2xrZXQgbW9kZWxsZW4gcmlrdGlnLCBzw6UgdmlsICRwbTIkIHbDpnJlIG1pbmRyZSBmb3IgZGVtIG5lZGVyc3RlIGt2aW50aWxlbiAoKmluY19rMSopIGVubiBmb3IgZGVuIMO4dmVyc3RlICgqaW5jX2s1KikuIERldCBzYW1tZSBnamVsZGVyIGZvciBkZSBtZWQga29ydCBvZyBsYW5nIHV0ZGFubmluZy4KCkRldHRlIGVyIG5vayBmb3JkaSBkZW4gcmlrZXJlIGRlbGVuIGF2IGJlZm9sa25pbmdlLCBvZyBkZSBtZWQgaMO4eWVyZSB1dGRhbm5pbmcsIHNhbm5zeW5saWd2aXMgaGFyIG1lciBhdHRyYWt0aXZlIGVuZWJvbGlnZXIgc29tIGdqw7hyIGF0ICRwbTIkIGVyIGjDuHllcmUuCgoKCiMjIEhldGVyb3NrZWRhc3Rpc2l0ZXQKCiMjIyBpLgpgYGB7cn0KYnB0ZXN0KGxtMSkKYGBgCgojIyMgaWkuCgpWZWxkaWcgaMO4eSBwLXZlcmRpLiBEYSBrYW4gJEhfMCQgZm9ya2FzdGVzIG9nIHZpIGthbiBtZWQgc3RlcmtlIGJldmlzIHNpIGF0IGRldCBmb3JlbGlnZ2VyIEhldGVyb3NrZWRhc3Rpc2l0ZXQuCgojIyMgaWlpLgoKYGBge3J9CmNvZWZ0ZXN0KGxtMSkKYGBgCgpgYGB7cn0KdmNvdkhDKGxtMSkKYGBgCgojIyMgaXYuCgpgYGB7cn0KcG0yIDwtIHBtMiAlPiUgCiAgYWRkX3Jlc2lkdWFscyhsbTEpCmBgYAoKIyMjIHYuCgpgYGB7cn0KcG0yIDwtIHBtMiAlPiUKICBtdXRhdGUoYWFyX2QgPSBtYWtlX2RhdGUoYWFyKSkKYGBgCgojIyMgdmkuCgpgYGB7cn0KcG0yIDwtIHBtMiAlPiUKICBtdXRhdGUoZnlsa2UgPSBzdWJzdHIoa25yLCBzdGFydCA9IDEsIHN0b3AgPSAyKSkgCmBgYAoKYGBge3J9CnBtMiA8LSBwbTIgJT4lIAogIGZpbHRlcihmeWxrZSAlaW4lIGMoIjAxIiwgIjAyIiwgIjAzIiwgIjExIiwgIjEyIikpCmBgYAoKIyMgdmlpIC14LgoKZ2dwbG90IG1lZCBmYXJnZSBww6UgZnlsa2VuZSwgb2cgbGVnZW5kLnBvc2l0aW9uLiBMZWdnZXIgb2dzw6UgaW5uIGhvcmlzb250YWwgbGluamUgZm9yIHkKYGBge3IgZ2dwbG90IH0KcG0yICU+JSAKICB1bm5lc3QoYyhmeWxrZSkpICU+JSAKICBncm91cF9ieShmeWxrZSwgYWFyX2QpICU+JSAKICBzdW1tYXJpc2UobWVhbl9meWxrZSA9IG1lYW4ocmVzaWQpKSAlPiUgCiAgZ2dwbG90KG1hcHBpbmcgPSBhZXMoeD0gYWFyX2QsIHk9IG1lYW5fZnlsa2UsIGNvbG91ciA9IGZ5bGtlKSkgKwogIGdlb21fbGluZShsd2Q9MSkgKwogIGdlb21faGxpbmUoeWludGVyY2VwdCA9IDAsIGNvbG91ciA9ICJ3aGl0ZSIpICsKICB0aGVtZShsZWdlbmQucG9zaXRpb24gPSAiYm90dG9tIikKYGBgCgojIER1bW15IGZ5bGtlIG9nIMOlcgoKIyMgaS4KCmBgYHtyfQptb2QyIDwtICdwbTIgfiBhYXJfZipmbnIgKyBUb3RhbF95YV9wICsgaW5jX2sxICsgaW5jX2s1ICsgdW5pX2tfbWYgKyB1bmlfbF9tZiArIFRyYWRlX3BjXzEwMEsnCmBgYAoKIyMgaWkuCmBgYHtyfQpsbTIgPC0gbG0obW9kMiwgZGF0YSA9IHBtMikKYGBgCgpgYGB7cn0Kc3VtbWFyeShsbTIpCmBgYAoKCmBgYHtyfQpwbTIgPC0gcG0yICU+JQogIG11dGF0ZShyZXNfbTIgPSByZXNpZChsbTIpKQpgYGAKCgojIyBpaWkuCgoKCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTW9kZWxsZXIiCmF1dGhvcjogIlNpbmRyZSBNLiBFc3BlZGFsICYgT2xlIEFsZXhhbmRlciBCYWtrZXZpayIKc3VidGl0bGU6IE1TQiAxMDUgLSBBc3NpZ25tZW50IDQKb3V0cHV0OgogIHBkZl9kb2N1bWVudDogZGVmYXVsdAogIGh0bWxfbm90ZWJvb2s6IGRlZmF1bHQKLS0tCgpgYGB7cn0Kc3VwcHJlc3NQYWNrYWdlU3RhcnR1cE1lc3NhZ2VzKHsKbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkobHVicmlkYXRlKQpsaWJyYXJ5KG1vZGVscikKbGlicmFyeShicm9vbSkKbGlicmFyeShsbXRlc3QpCmxpYnJhcnkoc2FuZHdpY2gpCmxpYnJhcnkodmlyaWRpcykKfSkKYGBgCgpIZW50ZXIgY3N2LiBmaWxlbjoKCmBgYHtyfQpwbTIgPC0gcmVhZF9jc3YoImRhdGEvcG0yLmNzdiIsIHNob3dfY29sX3R5cGVzID0gRkFMU0UpCmBgYAoKCk11dGVyZXI6CmBgYHtyfQpwbTIgPC0gcG0yICU+JSAKICBtdXRhdGUoCiAgICBmbnIgPSBzdHJfc3ViKGtuciwgMSwyKSwKICAgIGFhcl9mID0gc3RyX3N1YihhYXIpCiAgKQpgYGAKCgpgYGB7cn0KaGVhZChwbTIpCmBgYAoKcGFyc2VfZmFjdG9yIGZ1bmtzam9uZW46CmBgYHtyfQpwbTIgJT4lIAogIG11dGF0ZSgKICAgIGZuciA9IHBhcnNlX2ZhY3RvcihmbnIsIGxldmVscyA9IGZuciksCiAgICBhYXJfZiA9IHBhcnNlX2ZhY3RvcihhYXJfZiwgbGV2ZWxzID0gYWFyX2YpCiAgKQpgYGAKCgptdXRlcmVyOgpgYGB7cn0KcG0yIDwtIHBtMiAlPiUgCiAgbXV0YXRlKAogICAgVHJhZGVfcGNfMTAwSyA9IFRyYWRlX3AvMTAwMDAwCiAgKSAKYGBgCgpgYGB7ciBoZWFkfQpoZWFkKHBtMiwgbiA9IDQpCmBgYAoKCiMgTW9kZWxsCgpgYGB7cn0KbW9kMSA8LSAncG0yIH4gYWFyX2YgKyBUb3RhbF95YV9wICsgaW5jX2sxICsgaW5jX2s1ICsgdW5pX2tfbWYgKyB1bmlfbF9tZiArIFRyYWRlX3BjXzEwMEsnCmBgYAoKaS4gCgpgYGB7cn0KbG0xIDwtIGxtKG1vZDEsIGRhdGEgPSBwbTIsIHN1YnNldCA9IGNvbXBsZXRlLmNhc2VzKHBtMikpCmBgYAoKYGBge3J9CnN1bW1hcnkobG0xKQpgYGAKCgppaS4gTGVnZ2VyIHRpbCByZXNpZHVhbGVyOgoKYGBge3J9CnBtMiAlPiUgCiAgYWRkX3Jlc2lkdWFscyhsbTEpCmhlYWQocG0yLCBuID0gNCkKYGBgCgppLgoKTWFuIGxlc2VyIHV0IGdqZW5ub21zbml0dGxpZyBrdmFkcmF0bWV0ZXJwcmlzIGZvciBlbiBlbmVib2xpZyAoJHBtMiQpIGZvciBkZSBmb3Jza2plbGxpZ2Ugw6VyZW5lLiBWaSBzZXIgYXQgJHBtMiQgc3RpZ2VyIGpldm50IG9nIHRydXR0LgoKaWkuCgpWaSB2aWwgc2kgYXQgZm9ydGVnbmVuZSBlciBzb20gZm9ydmVudGV0LiBEZXJzb20gdmkgaGFyIHRvbGtldCBtb2RlbGxlbiByaWt0aWcsIHPDpSB2aWwgJHBtMiQgdsOmcmUgbWluZHJlIGZvciBkZW0gbmVkZXJzdGUga3ZpbnRpbGVuICgqaW5jX2sxKikgZW5uIGZvciBkZW4gw7h2ZXJzdGUgKCppbmNfazUqKS4gRGV0IHNhbW1lIGdqZWxkZXIgZm9yIGRlIG1lZCBrb3J0IG9nIGxhbmcgdXRkYW5uaW5nLgoKRGV0dGUgZXIgbm9rIGZvcmRpIGRlbiByaWtlcmUgZGVsZW4gYXYgYmVmb2xrbmluZ2UsIG9nIGRlIG1lZCBow7h5ZXJlIHV0ZGFubmluZywgc2FubnN5bmxpZ3ZpcyBoYXIgbWVyIGF0dHJha3RpdmUgZW5lYm9saWdlciBzb20gZ2rDuHIgYXQgJHBtMiQgZXIgaMO4eWVyZS4KCgoKIyMgSGV0ZXJvc2tlZGFzdGlzaXRldAoKIyMjIGkuCmBgYHtyfQpicHRlc3QobG0xKQpgYGAKCiMjIyBpaS4KClZlbGRpZyBow7h5IHAtdmVyZGkuIERhIGthbiAkSF8wJCBmb3JrYXN0ZXMgb2cgdmkga2FuIG1lZCBzdGVya2UgYmV2aXMgc2kgYXQgZGV0IGZvcmVsaWdnZXIgSGV0ZXJvc2tlZGFzdGlzaXRldC4KCiMjIyBpaWkuCgpgYGB7cn0KY29lZnRlc3QobG0xKQpgYGAKCmBgYHtyfQp2Y292SEMobG0xKQpgYGAKCiMjIyBpdi4KCmBgYHtyfQpwbTIgPC0gcG0yICU+JSAKICBhZGRfcmVzaWR1YWxzKGxtMSkKYGBgCgojIyMgdi4KCmBgYHtyfQpwbTIgPC0gcG0yICU+JQogIG11dGF0ZShhYXJfZCA9IG1ha2VfZGF0ZShhYXIpKQpgYGAKCiMjIyB2aS4KCmBgYHtyfQpwbTIgPC0gcG0yICU+JQogIG11dGF0ZShmeWxrZSA9IHN1YnN0cihrbnIsIHN0YXJ0ID0gMSwgc3RvcCA9IDIpKSAKYGBgCgojIyB2aWkgLXguCgpgYGB7cn0KcG0yICU+JQogIGZpbHRlcihmeWxrZSAlaW4lIGMoIjAxIiwgIjAyIiwgIjAzIiwgIjExIiwgIjEyIikpICU+JSAKICB1bm5lc3QoYyhmeWxrZSkpICU+JQogIGdyb3VwX2J5KGZ5bGtlLCBhYXJfZCkgJT4lCiAgc3VtbWFyaXplKG1lYW5fZnlsa2UgPSBtZWFuKHJlc2lkKQogICAgICAgICAgICApICU+JSAKICBnZ3Bsb3QoYWVzKHggPSBhYXJfZCwgeSA9IG1lYW5fZnlsa2UsIGNvbG91ciA9IGZ5bGtlKSkgKwogIGdlb21fbGluZShsd2Q9MSkgKwogIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9ICJib3R0b20iKSsKICBnZW9tX2hsaW5lKHlpbnRlcmNlcHQgPSAwLCBjb2xvdXIgPSAiYmxhY2siKQoKYGBgCgojIER1bW15IGZ5bGtlIG9nIMOlcgoKIyMgaSAmIGlpLgoKYGBge3J9Cm1vZDIgPC0gJ3BtMiB+IGFhcl9mKmZuciArIFRvdGFsX3lhX3AgKyBpbmNfazEgKyBpbmNfazUgKyB1bmlfa19tZiArIHVuaV9sX21mICsgVHJhZGVfcGNfMTAwSycKCmxtMiA8LSBsbShtb2QyLCBkYXRhID0gcG0yKQoKc3VtbWFyeShsbTIpCmBgYAoKIyMgaWlpLgoKYGBge3J9CnBtMiA8LSBwbTIgJT4lCiAgbXV0YXRlKHJlc19tMiA9IHJlc2lkKGxtMikpCmBgYAoKCiMjIGl2LgoKRGVscGxvdHQ6CgpgYGB7cn0KcG0yICU+JSBmaWx0ZXIoZm5yICVpbiUgYygiMDEiLCAiMDIiLCAiMDQiLCAiMTEiLCAiMTIiKSkgJT4lCmdncGxvdChtYXBwaW5nID0gYWVzKHggPSBhYXJfZCwgeSA9IHJlc19tMikpICsKZ2VvbV9saW5lKGFlcyhncm91cCA9IGtuYXZuKSkgKwpzY2FsZV9zaXplX21hbnVhbCh2YWx1ZXMgPSBjKHNlcSgyLjAsIDAuNSwgYnkgPSAtMC4xKSkpICsKZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCkgKwp0aGVtZShsZWdlbmQucG9zaXRpb24gPSAnYm90dG9tJykgKwogIGZhY2V0X3dyYXAofmZ5bGtlKQpgYGAKCiMjIGkgJiBpaS4KCkt2YWxpdGV0ZW4gcMOlIG1vZGVsbGVuIGVyIGlra2UgaGVsdCBvcHRpbWFsIGRhIGRlbiBtYW5nbGVyIG5vZW4gdmFyaWFibGVyLgpEZXR0ZSBrYW4gaGEgbm9lIG1lZCBoZXRlcm9za2VkYXRpc2l0ZXQgaSBtb2RlbGwgYXQgZGV0IGVyIHN0b3IgdmFyaWFzam9uLgpEZXQgZXIgc3RvcmUgcmVzaWR1YWxlciwgc3Blc2llbHQgaSBSb2dhbGFuZC4KClV0IGkgZnJhIGdyYWZlbmUgc8OlIHNlciBtYW4gYXQgdmFyaWFzam9uZW4gZXIgc3Rvci4gRGV0dGUgaW5kaWtlcmVyIGV0IGhldGVyb3NrZWRhc3Rpc2l0ZXRzcHJvYmxlbSwgb2cgZGVybWVkIGVyIGRldCBncnVubiB0aWwgYXQgZGV0IGVyIHV0ZWxhdHRlIHZpa3RpZ2UgdmFyaWFibGVyIChicnVkZCBww6UgVFMuMy9UUycuMykKCiMjIGlpaS4KCmBgYHtyfQpwbTIgJT4lIGZpbHRlcihmbnIgJWluJSBjKCIxMSIpKSAlPiUKZ2dwbG90KG1hcHBpbmcgPSBhZXMoeCA9IGFhcl9kLCB5ID0gcmVzX20yKSkgKwpzY2FsZV9jb2xvcl92aXJpZGlzKGRpc2NyZXRlID0gVFJVRSwgb3B0aW9uID0gIkQiKSArCmdlb21fbGluZShhZXMoZ3JvdXAgPSBrbmF2biwgY29sb3VyID0ga25hdm4sIHNpemUgPWtuYXZuKSkgKwpzY2FsZV9zaXplX21hbnVhbCh2YWx1ZXMgPSBjKHNlcSgyLjAsIDAuNSwgYnkgPSAtMC4xKSkpICsKZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCkgKwp0aGVtZShsZWdlbmQucG9zaXRpb24gPSAnYm90dG9tJykKYGBgCgojIyBpLgoKYGBge3J9CnBtMiAlPiUgZmlsdGVyKGtuciAlaW4lIGMoIjExMTkiLCAiMTEyMCIsICIxMTI3IiwgIjExMjEiLCAiMTEzMCIsICIxMTM1IiwgIjExMDYiLCAiMTE0OSIpKSAlPiUKZ2dwbG90KG1hcHBpbmcgPSBhZXMoeCA9IGFhcl9kLCB5ID0gcmVzX20yKSkgKwpzY2FsZV9jb2xvcl92aXJpZGlzKGRpc2NyZXRlID0gVFJVRSwgb3B0aW9uID0gIkgiKSArCmdlb21fbGluZShhZXMoZ3JvdXAgPSBrbmF2biwgY29sb3VyID0ga25hdm4sIHNpemUgPWtuYXZuKSkgKwpzY2FsZV9zaXplX21hbnVhbCh2YWx1ZXMgPSBjKHNlcSgyLjAsIDAuNSwgYnkgPSAtMC4xKSkpICsKZ2VvbV9obGluZSh5aW50ZXJjZXB0ID0gMCkgKwp0aGVtZShsZWdlbmQucG9zaXRpb24gPSAnYm90dG9tJykKYGBgCgojIyBpaS4KClN0YXZhbmdlci1rb21tdW5lbmUgb3ZlcnZ1cmRlcmVzIChIw6UsIEtsZXBwIG9nIFJhbmRhYmVyZykuCgoKIyBNb2RlbGwgZm9yIGh2ZXJ0IMOlcgoKIyMgaS4KCmBgYHtyfQpwbTJfbiA8LSBwbTIgJT4lIAogIGdyb3VwX2J5KGFhcikgJT4lCiAgc2VsZWN0KHBtMiwgZm5yLCBrbnIsIGFhciwgYWFyX2YsIE1lbm5feWFfcCwgS3Zpbm5lcl95YV9wLCBUb3RhbF95YV9wLCBpbmNfazEsIGluY19rNSwgdW5pX2tfbWYsIHVuaV9sX21mLCBUcmFkZV9wY18xMDBLKSAlPiUgCiAgbmVzdCgpCmBgYAoKYGBge3J9CnBtMl9uCmBgYAoKYGBge3J9CnBtMl9uJGRhdGFbWzFdXSAlPiUKaGVhZChuID0gNSkKYGBgCgpgYGB7cn0KZGltKHBtMl9uKQpgYGAKCgojIyAxLgoKYGBge3J9CmtvbV9tb2RlbCA8LSBmdW5jdGlvbihhX2RmKSB7CiAgbG0ocG0yIH4gZm5yICsgVG90YWxfeWFfcCArIGluY19rMSArIGluY19rNSArIHVuaV9rX21mICsgdW5pX2xfbWYgKyBUcmFkZV9wY18xMDBLLCBkYXRhID0gcG0yKQp9CmBgYAoKCgpgYGB7cn0KcG0yX24gPC0gcG0yX24gJT4lIAogIG11dGF0ZShtb2RlbCA9IG1hcChkYXRhLCAuZiA9IGtvbV9tb2RlbCkpIApgYGAKCgpgYGB7cn0Ka29tX21vZGVsKHBtMl9uJGFhcikgJT4lIAogIHN1bW1hcnkoKQpgYGAKCgojIyBpLgoKYGBge3J9CnBtMl9uICU+JSAKICBmaWx0ZXIoYWFyJWluJSBjKCIyMDA4IikpICU+JSAKICAuJG1vZGVsICU+JSAKICBtYXBfZGYoZ2xhbmNlKSAlPiUgCiAgcHJpbnQoKQpgYGAKCmBgYHtyfQptb2Rfc3VtIDwtIHBtMl9uICU+JSAKICBmaWx0ZXIoYWFyICVpbiUgYygiMjAwOCIsICIyMDA5IiwgIjIwMTAiLCAiMjAxMSIsICIyMDEyIiwgIjIwMTMiLCAiMjAxNCIsICIyMDE1IiwgIjIwMTYiLCAiMjAxNyIpKSAlPiUgCiAgbXV0YXRlKG1vZF9zdW1tYXJ5ID0gbWFwKC54ID0gbW9kZWwsIC5mID0gZ2xhbmNlKSkgJT4lIAogIHVubmVzdChtb2Rfc3VtbWFyeSkgJT4lIAogIHByaW50KCkKYGBgCgoKYGBge3J9CmNvZWZfZGYgPC0gbW9kX3N1bSAlPiUgCiAgbWFwX2RmKCkgJT4lIAogIGFzLnRpYmJsZSgpCmBgYAoKCgoKCgoKCgoKCgoKCgoKCgo=</div>
 
 
 

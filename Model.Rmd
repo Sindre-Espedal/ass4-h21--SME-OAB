@@ -1,8 +1,10 @@
 ---
 title: "Modeller"
-subtitle: "MSB 105 - Assignment 4"
 author: "Sindre M. Espedal & Ole Alexander Bakkevik"
-output: html_notebook
+subtitle: MSB 105 - Assignment 4
+output:
+  pdf_document: default
+  html_notebook: default
 ---
 
 ```{r}
@@ -57,8 +59,7 @@ pm2 <- pm2 %>%
 ```
 
 ```{r head}
-head(pm2, n = 4) %>% 
-  select(knr, fnr, aar_f, Trade_pc_100K)
+head(pm2, n = 4)
 ```
 
 
@@ -141,42 +142,35 @@ pm2 <- pm2 %>%
   mutate(fylke = substr(knr, start = 1, stop = 2)) 
 ```
 
-```{r}
-pm2 <- pm2 %>% 
-  filter(fylke %in% c("01", "02", "03", "11", "12"))
-```
-
 ## vii -x.
 
-ggplot med farge på fylkene, og legend.position. Legger også inn horisontal linje for y
-```{r ggplot }
-pm2 %>% 
-  unnest(c(fylke)) %>% 
-  group_by(fylke, aar_d) %>% 
-  summarise(mean_fylke = mean(resid)) %>% 
-  ggplot(mapping = aes(x= aar_d, y= mean_fylke, colour = fylke)) +
+```{r}
+pm2 %>%
+  filter(fylke %in% c("01", "02", "03", "11", "12")) %>% 
+  unnest(c(fylke)) %>%
+  group_by(fylke, aar_d) %>%
+  summarize(mean_fylke = mean(resid)
+            ) %>% 
+  ggplot(aes(x = aar_d, y = mean_fylke, colour = fylke)) +
   geom_line(lwd=1) +
-  geom_hline(yintercept = 0, colour = "white") +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom")+
+  geom_hline(yintercept = 0, colour = "black")
+
 ```
 
 # Dummy fylke og år
 
-## i.
+## i & ii.
 
 ```{r}
 mod2 <- 'pm2 ~ aar_f*fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K'
-```
 
-## ii.
-```{r}
 lm2 <- lm(mod2, data = pm2)
-```
 
-```{r}
 summary(lm2)
 ```
 
+## iii.
 
 ```{r}
 pm2 <- pm2 %>%
@@ -184,7 +178,142 @@ pm2 <- pm2 %>%
 ```
 
 
+## iv.
+
+Delplott:
+
+```{r}
+pm2 %>% filter(fnr %in% c("01", "02", "04", "11", "12")) %>%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+geom_line(aes(group = knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = 'bottom') +
+  facet_wrap(~fylke)
+```
+
+## i & ii.
+
+Kvaliteten på modellen er ikke helt optimal da den mangler noen variabler.
+Dette kan ha noe med heteroskedatisitet i modell at det er stor variasjon.
+Det er store residualer, spesielt i Rogaland.
+
+Ut i fra grafene så ser man at variasjonen er stor. Dette indikerer et heteroskedastisitetsproblem, og dermed er det grunn til at det er utelatte viktige variabler (brudd på TS.3/TS'.3)
+
 ## iii.
+
+```{r}
+pm2 %>% filter(fnr %in% c("11")) %>%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+scale_color_viridis(discrete = TRUE, option = "D") +
+geom_line(aes(group = knavn, colour = knavn, size =knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = 'bottom')
+```
+
+## i.
+
+```{r}
+pm2 %>% filter(knr %in% c("1119", "1120", "1127", "1121", "1130", "1135", "1106", "1149")) %>%
+ggplot(mapping = aes(x = aar_d, y = res_m2)) +
+scale_color_viridis(discrete = TRUE, option = "H") +
+geom_line(aes(group = knavn, colour = knavn, size =knavn)) +
+scale_size_manual(values = c(seq(2.0, 0.5, by = -0.1))) +
+geom_hline(yintercept = 0) +
+theme(legend.position = 'bottom')
+```
+
+## ii.
+
+Stavanger-kommunene overvurderes (Hå, Klepp og Randaberg).
+
+
+# Modell for hvert år
+
+## i.
+
+```{r}
+pm2_n <- pm2 %>% 
+  group_by(aar) %>%
+  select(pm2, fnr, knr, aar, aar_f, Menn_ya_p, Kvinner_ya_p, Total_ya_p, inc_k1, inc_k5, uni_k_mf, uni_l_mf, Trade_pc_100K) %>% 
+  nest()
+```
+
+```{r}
+pm2_n
+```
+
+```{r}
+pm2_n$data[[1]] %>%
+head(n = 5)
+```
+
+```{r}
+dim(pm2_n)
+```
+
+
+## 1.
+
+```{r}
+kom_model <- function(a_df) {
+  lm(pm2 ~ fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K, data = pm2)
+}
+```
+
+
+
+```{r}
+pm2_n <- pm2_n %>% 
+  mutate(model = map(data, .f = kom_model)) 
+```
+
+
+```{r}
+kom_model(pm2_n$aar) %>% 
+  summary()
+```
+
+
+## i.
+
+```{r}
+pm2_n %>% 
+  filter(aar%in% c("2008")) %>% 
+  .$model %>% 
+  map_df(glance) %>% 
+  print()
+```
+
+```{r}
+mod_sum <- pm2_n %>% 
+  filter(aar %in% c("2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017")) %>% 
+  mutate(mod_summary = map(.x = model, .f = glance)) %>% 
+  unnest(mod_summary) %>% 
+  print()
+```
+
+
+```{r}
+coef_df <- mod_sum %>% 
+  map_df() %>% 
+  as.tibble()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
