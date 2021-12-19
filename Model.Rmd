@@ -254,7 +254,7 @@ dim(pm2_n)
 ```
 
 
-## 1.
+## i.
 
 ```{r}
 kom_model <- function(a_df) {
@@ -294,23 +294,11 @@ mod_sum <- pm2_n %>%
   print()
 ```
 
-
 ```{r}
-coef_df <- mod_sum %>% 
-  map_df() %>% 
+coef_df <- mod_sum$model %>% 
+  map_df(1) %>% 
   as.tibble()
 ```
-
-
-
-
-
-
-
-
-
-
-
 
 
 
