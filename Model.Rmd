@@ -3,8 +3,10 @@ title: "Modeller"
 author: "Sindre M. Espedal & Ole Alexander Bakkevik"
 subtitle: MSB 105 - Assignment 4
 output:
-  pdf_document: default
+  html_document:
+    df_print: paged
   html_notebook: default
+  pdf_document: default
 ---
 
 ```{r}
@@ -296,8 +298,8 @@ mod_sum <- pm2_n %>%
 
 
 ```{r}
-coef_df <- mod_sum %>% 
-  map_df() %>% 
+coef_df <- mod_sum$model %>% 
+  map_df(1) %>% 
   as.tibble()
 ```
 
