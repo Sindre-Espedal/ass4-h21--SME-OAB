@@ -301,5 +301,62 @@ coef_df <- mod_sum$model %>%
 ```
 
 
+## i.
+
+Lager ny variabel (*aar_d*) i **coef_df**:
+
+```{r}
+coef_df <- mod_sum %>%
+  mutate(aar = make_date(aar_d))
+```
+
+
+
+
+ii. Pivot_longer coef_df til coef_df_long.
+
+## ii.
+
+Pivot_longer funksjonen: **coef_df** til **coef_df_long**.
+
+```{r}
+coef_df_long <- coef_df %>% 
+  pivot_longer(cols = ,
+               names_to = ,
+               values_to = )
+```
+
+
+
+
+
+
+
+
+iii. Lag så et plot av fylke-faktorvariablenes koeffisienter for fylkene “fnr02”, “fnr03”, “fnr04”, “fnr10”,
+“fnr11”, “fnr12”, “fnr14” fra år 2008 til 2017.
+
+## iii.
+
+
+
+
+
+iv. Hva sier plot-et oss om prisutviklingen i disse fylkene?
+
+
+v. Hva skjedde i 2014?
+
+
+
+
+
+
+
+
+
+
+
+
 
 
