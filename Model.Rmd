@@ -256,12 +256,12 @@ dim(pm2_n)
 
 ## i.
 
+Funksjon **kom_model**:
 ```{r}
 kom_model <- function(a_df) {
   lm(pm2 ~ fnr + Total_ya_p + inc_k1 + inc_k5 + uni_k_mf + uni_l_mf + Trade_pc_100K, data = a_df)
 }
 ```
-
 
 
 ```{r}
@@ -306,6 +306,7 @@ coef_df <- mod_sum$model %>%
 Lager ny variabel (*aar_d*) i **coef_df**:
 
 ```{r}
+# Er nok feil -> Må fikses opp i.
 coef_df <- mod_sum %>%
   mutate(aar = make_date(aar_d))
 ```
@@ -320,12 +321,8 @@ ii. Pivot_longer coef_df til coef_df_long.
 Pivot_longer funksjonen: **coef_df** til **coef_df_long**.
 
 ```{r}
-coef_df_long <- coef_df %>% 
-  pivot_longer(cols = ,
-               names_to = ,
-               values_to = )
+coef_df_long <- coef_df
 ```
-
 
 
 
@@ -339,13 +336,14 @@ iii. Lag så et plot av fylke-faktorvariablenes koeffisienter for fylkene “fnr
 ## iii.
 
 
-
-
-
 iv. Hva sier plot-et oss om prisutviklingen i disse fylkene?
 
+## iv.
 
 v. Hva skjedde i 2014?
+
+## v.
+
 
 
 
