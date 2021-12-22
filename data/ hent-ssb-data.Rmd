@@ -3,9 +3,9 @@ title: "hent-ssb-data"
 subtitle: "MSB 105 - Data Science"
 author: "Sindre M. Espedal og Ole Alexander Bakkevik"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 
 ```{r setup}
