@@ -3,9 +3,9 @@ title: "hent-ssb-data"
 subtitle: "MSB 105 - Data Science"
 author: "Sindre M. Espedal og Ole Alexander Bakkevik"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup}
@@ -14,7 +14,7 @@ library(tidyverse)
 library(lubridate)
 library(PxWebApiData)
 })
-knitr::opts_chunk$set(eval=FALSE)
+#knitr::opts_chunk$set(eval=FALSE)
 ```
 
 Laster inn dataene:
@@ -219,7 +219,7 @@ pop_08_17 <- pop_08_17_raw %>%
 
 Lager navn:
 
-```{r names}
+```{r names1}
 names(pop_08_17)[[1]] <- "knr"
 names(pop_08_17)[[2]] <- "alder"
 names(pop_08_17)[[3]] <- "aar"
@@ -555,3 +555,8 @@ Så gjøres det om til csv:
 ```{r}
 write.csv(pm2, "pm2.csv")
 ```
+
+```{r, echo = FALSE}
+#siste
+```
+

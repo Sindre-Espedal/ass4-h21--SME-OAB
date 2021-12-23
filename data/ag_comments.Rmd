@@ -1,0 +1,13 @@
+---
+title: "ag comments"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+-   Dere vippet meg nesten av pinnen. Fikk noen snåle feilmeldinger nå jeg prøvde knitr på hent-ssb-data.Rmd.
+-   Viste seg at problemet var at dere hadde lagt inn en space i starten av filnavnet. Ikke lett å se. Har endret navnet på denne ved å føye til -space-start.
+-   Når jeg endret filnavnet fungerte alt som det skulle.
+-   Endret også et chunk-navn duplikat i hent-ssb-data.Rmd
+-   Ellers ser det fint ut.
