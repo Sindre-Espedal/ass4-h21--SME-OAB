@@ -5,6 +5,8 @@ subtitle: MSB 105 - Assignment 4
 output:
   pdf_document: default
   html_notebook: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r}
@@ -384,4 +386,8 @@ coef_df_long %>%
 **inc_k1** kan man vel si er "stabilt nedgående" over tid.
 
 **Trade_pc_100K** er den desidert mest ustabile (mest variasjon).
+
+```{r, echo = FALSE}
+#siste
+```
 
